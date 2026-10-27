@@ -3,11 +3,11 @@
         {
             'use strict';
             const byId = id => document.getElementById(id);
-            const numberFormat = new Intl.NumberFormat('fa-IR', {maximumFractionDigits: 2});
+            const numberFormat = new Intl.NumberFormat('fa-AF', {maximumFractionDigits: 2});
             const sections = ['materials', 'labor', 'other'];
             const sectionLabels = {materials: 'مصالح', labor: 'دستمزد', other: 'هزینه جانبی'};
-            const monthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
-            const persianFormatter = new Intl.DateTimeFormat('en-US-u-ca-persian', {year: 'numeric', month: 'numeric', day: 'numeric'});
+            const monthNames = ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'];
+            const persianFormatter = new Intl.DateTimeFormat('en-US-u-ca-persian', {timeZone: 'Asia/Kabul', year: 'numeric', month: 'numeric', day: 'numeric'});
             const faDigits = value => String(value).replace(/[0-9]/g, digit => '۰۱۲۳۴۵۶۷۸۹'[Number(digit)]);
             const latinDigits = value => String(value).replace(/[۰-۹]/g, digit => String(digit.charCodeAt(0) - 1776))
             .replace(/[٠-٩]/g, digit => String(digit.charCodeAt(0) - 1632));
@@ -86,7 +86,7 @@
             {
                 for(let day = 18; day <= 24; day++)
                     {
-                        const date = new Date(gregorianYear, 2, day, 12);
+                        const date = new Date(Date.UTC(gregorianYear, 2, day, 12));
                         const parts = persianParts(date);
                         if(parts.year === jalaliYear && parts.month === 1 && parts.day === 1) return date;
                     }
@@ -121,7 +121,7 @@
                 const row = document.createElement('div');
                 row.className = 'cost-row';
                 row.dataset.section = section;
-                row.innerHTML = `<input class="item-name" type="text" maxlength="100" aria-label="شرح هزینه" placeholder="عنوان هزینه یا خدمت"> <input class="qty" type="text" inputmode="decimal" aria-label="تعداد" placeholder="تعداد"> <input class="price" type="text" inputmode="decimal" aria-label="قیمت واحد به تومان" placeholder="قیمت واحد(تومان)"> <output class="line-amount" aria-label="جمع مبلغ این ردیف">۰</output> <button type="button" class="delete-row" aria-label="حذف ردیف" title="حذف ردیف"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18m-2 0-1 14H6L5 6m4 0V4h6v2"/></svg></button>`;
+                row.innerHTML = `<input class="item-name" type="text" maxlength="100" aria-label="شرح هزینه" placeholder="عنوان هزینه یا خدمت"> <input class="qty" type="text" inputmode="decimal" aria-label="تعداد" placeholder="تعداد"> <input class="price" type="text" inputmode="decimal" aria-label="قیمت واحد به افغانی" placeholder="قیمت واحد(افغانی)"> <output class="line-amount" aria-label="جمع مبلغ این ردیف">۰</output> <button type="button" class="delete-row" aria-label="حذف ردیف" title="حذف ردیف"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18m-2 0-1 14H6L5 6m4 0V4h6v2"/></svg></button>`;
                 row.querySelector('.item-name').value = data.name ?? '';
                 row.querySelector('.qty').value = data.qty ?? '';
                 row.querySelector('.price').value = data.price ?? '';
@@ -208,7 +208,7 @@
             {
                 const {rows, totals, invalid: rowsInvalid} = collectRows();
                 let invalid = rowsInvalid;
-                for(const section of sections) setText(`${section}Total`, `${formatMoney(totals[section])} تومان`);
+                for(const section of sections) setText(`${section}Total`, `${formatMoney(totals[section])} افغانی`);
                 const profit = parseNumber(byId('profit').value);
                 const taxRate = parseNumber(byId('taxRate').value);
                 const area = parseNumber(byId('area').value);
